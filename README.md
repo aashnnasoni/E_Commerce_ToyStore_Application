@@ -23,13 +23,13 @@
 
 ## Architecture Overview
 
-![](./images/design/media/image1.png)
+![](./docs/images/design/media/image1.png)
 
 Here the order service is abstracted as a single service but in implementation it is a set of 3 replicas with a leader, that are in sync. 
 
 ## Component Details
 
-### **4a. FrontEnd**  {#a.-frontend .unnumbered}
+### **4a. FrontEnd** 
 
 ![](./images/design/media/image2.png)
 
@@ -161,11 +161,28 @@ while the others serve as followers.
     requests and order queries to the leader replica. This ensures all
     order information is centralized and updated consistently.
 
-## **4b. Catalog Service **Same implementation as Lab 2. {#b.-catalog-service-same-implementation-as-lab-2. .unnumbered}
+## **4b. Catalog Service 
+
+**HTTP Server Setup and Customization:**
+Similar to the frontend.py code, this module sets up an HTTP server, but it’s specifically tailored for catalog-related operations. The server is customized using the CatalogService class, extending BaseHTTPRequestHandler, which handles GET and POST requests for catalog information.
+
+**Concurrency Control:**
+The ThreadPoolHTTPServer class extends the base class ThreadingMixIn class incorporates a ThreadPoolExecutor to manage multiple incoming requests concurrently. This design choice ensures efficient resource utilization and responsiveness under varying workloads.
+
+**Data Persistence:**
+The load_disk class is responsible for loading catalog data from a disk file (catalog.csv) upon server initialization and saving any changes back to the disk upon server shutdown. Catalog data is stored in memory using the Memory_attributes class, providing a central data structure accessible across the server instance.
+
+**Request Handling:**
+The CatalogService class defines methods (do_GET and do_POST) to handle HTTP GET and POST requests, respectively. These methods interact with the catalog data stored in memory to retrieve or modify product information. Concurrency control is enforced using a thread lock (self.lock) to ensure thread safety during data access and manipulation operations.
+
+**Server Initialization and Shutdown:**
+The run_server function initializes the catalog server, loads catalog data from disk, and starts serving
+requests indefinitely. Upon server shutdown (triggered by a keyboard interrupt), changes to catalog
+data are saved back to the disk file.
 
 **4c. Order Service**
 
-![](./images/design/media/image3.png){width="2.126890857392826in"
+![](./docs/images/design/media/image3.png){width="2.126890857392826in"
 height="2.210094050743657in"}
 
 **[APIs Exposed:-]**
@@ -219,3 +236,27 @@ The leaders process the order and use the `/sync` endpoint to send the order det
 2.  <https://docs.python.org/3/library/http.server.html>
 
 3.  <https://docs.python.org/3/library/http.client.html>
+
+## Getting started
+
+The `order`, `frontend` and `catalog` services are in their respective directories.
+
+First start the catalog service using
+```
+python3 catalog.py
+```
+
+Then start the order replicas using
+```
+python3 order.py --port <port> --replica_id <id>
+```
+
+Then the frontend
+```
+python3 front_end.py
+```
+And the cleint using
+```
+python3 client.py
+```
+Additionally the hosts and port numbers can be configured in `conf.properties`
