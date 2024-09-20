@@ -1,9 +1,9 @@
 
 
-## Motivation
+## 1. Motivation
   In this project, we have engineered a multi-tier, microservice-based distributed server application. We have delved into crucial topics such as caching, replication, and consistency, gaining invaluable insights into optimizing data storage and retrieval mechanisms. Additionally, we have explored the pivotal concepts of fault tolerance and high availability, essential components in building robust and resilient systems. Moreover, the project offers a practical avenue for understanding the intricacies of deploying applications on cloud platforms, enabling us to navigate the dynamic landscape of cloud computing.
 
-## Goals
+## 2. Goals
 
 1.  Design distributed server applications using a multi-tier
     architecture and microservices.
@@ -21,13 +21,13 @@
 7.  Learn about how to deploy your application on the cloud. Optionally
     learn about Paxos and Raft
 
-## Architecture Overview
+## 3. Architecture Overview
 
 ![](./docs/images/design/media/image1.png)
 
 Here the order service is abstracted as a single service but in implementation it is a set of 3 replicas with a leader, that are in sync. 
 
-## Component Details
+## 4. Component Details
 
 ### **4a. FrontEnd** 
 
@@ -35,7 +35,7 @@ Here the order service is abstracted as a single service but in implementation i
 
 **[APIs Exposed:-]**
 
--   **[get_products_api :]{.underline} GET /products/\<product\>\
+-   **[get_products_api:]{.underline} GET /products/\<product\>\
     **This API is used by client to fetch product details for a given
     product.
 
@@ -161,7 +161,7 @@ while the others serve as followers.
     requests and order queries to the leader replica. This ensures all
     order information is centralized and updated consistently.
 
-## **4b. Catalog Service 
+### **4b. Catalog Service** 
 
 **HTTP Server Setup and Customization:**
 Similar to the frontend.py code, this module sets up an HTTP server, but it’s specifically tailored for catalog-related operations. The server is customized using the CatalogService class, extending BaseHTTPRequestHandler, which handles GET and POST requests for catalog information.
@@ -180,14 +180,14 @@ The run_server function initializes the catalog server, loads catalog data from 
 requests indefinitely. Upon server shutdown (triggered by a keyboard interrupt), changes to catalog
 data are saved back to the disk file.
 
-**4c. Order Service**
+### **4c. Order Service**
 
 ![](./docs/images/design/media/image3.png){width="2.126890857392826in"
 height="2.210094050743657in"}
 
 **[APIs Exposed:-]**
 
--   [get_order_api :] GET /\<order_number\>\
+-   [get_order_api:] GET /\<order_number\>\
     This API is used by front-end service to fetch order details for a
     given order number.
 
@@ -201,8 +201,6 @@ height="2.210094050743657in"}
 -   [get_status_api:] GET /syncfrom\
     This API is by replicas to sync from a particular order number.
 
-
-
 -   [post_orders_api:] POST /orders\
     This API is used by front-end service to place an order.
 
@@ -215,7 +213,7 @@ height="2.210094050743657in"}
     This API is used by front-end service to notify which order
     replica is the leader. This leader information is stored in memory.
 
-## 4c. Fault Tolerance:
+## 4d. Fault Tolerance:
 
 Fault tolerance is implemented in the following way:
 - when a replica is started, it first checks if there are any other replicas up
@@ -228,7 +226,7 @@ When the frontend detects that the leader has crashed, it will relect a new lead
 The leaders process the order and use the `/sync` endpoint to send the order details to the other replicas
 
 
-**6. References:**
+**5. References:**
 
 1.  HTTP
     protocol: <https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol>
@@ -237,7 +235,7 @@ The leaders process the order and use the `/sync` endpoint to send the order det
 
 3.  <https://docs.python.org/3/library/http.client.html>
 
-## Getting started
+## 6. Getting started
 
 The `order`, `frontend` and `catalog` services are in their respective directories.
 
