@@ -35,18 +35,18 @@ Here the order service is abstracted as a single service but in implementation i
 
 **[APIs Exposed:-]**
 
--   **[get_products_api:]{.underline} GET /products/\<product\>\
+-   **[get_products_api:] GET /products/\<product\>\
     **This API is used by client to fetch product details for a given
     product.
 
--   **[get_orders_api:]{.underline} GET /orders/\<order_number\>\
+-   **[get_orders_api:] GET /orders/\<order_number\>\
     **This API is used by client to get order details for a given order
     number.
 
--   **[post_order_api:]{.underline} POST /order\
+-   **[post_order_api:] POST /order\
     **This API is used by client to place an order.
 
--   **[post_cache_api:]{.underline} POST /cache\
+-   **[post_cache_api:] POST /cache\
     **This API is used by catalog service to remove a product's details
     from cache whenever an order is placed (product quantity is updated)
     or a product is restocked.
